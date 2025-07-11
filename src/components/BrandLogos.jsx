@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { SiHonda, SiBmw, SiMercedes, SiAudi, SiFord, SiNissan, SiToyota, SiVolkswagen, SiPorsche } from 'react-icons/si';
 
@@ -18,12 +17,26 @@ const brands = [
 const BrandLogos = () => {
   const [activeButton, setActiveButton] = useState('brand');
   const [currentPage, setCurrentPage] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Calculate total pages based on 7 logos per page
-  const totalPages = Math.ceil(brands.length / 7);
+  // Check if screen is mobile
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
+  // Calculate logos per page and total pages based on screen size
+  const logosPerPage = isMobile ? 2 : 7;
+  const totalPages = Math.ceil(brands.length / logosPerPage);
 
   // Get logos for current page
-  const currentLogos = brands.slice(currentPage * 7, (currentPage + 1) * 7);
+  const currentLogos = brands.slice(currentPage * logosPerPage, (currentPage + 1) * logosPerPage);
 
   const handleNextPage = () => {
     setCurrentPage((prev) => (prev + 1) % totalPages);
@@ -37,100 +50,118 @@ const BrandLogos = () => {
   useEffect(() => {
     const autoSwipeInterval = setInterval(() => {
       handleNextPage();
-    }, 5000); // Swipe every 5 seconds
+    }, 5000);
 
-    // Clean up the interval when the component unmounts
     return () => clearInterval(autoSwipeInterval);
-  }, [currentPage]);
+  }, [currentPage, totalPages]);
 
   return (
-    <div className='container mx-auto py-12'>
-      <div className='flex flex-col justify-center items-center h-[200px] space-y-4 text-center'>
-        <h1 className='text-4xl font-bold'>
+    <div className='container mx-auto py-8 px-4'>
+      {/* Header Section */}
+      <div className='flex flex-col justify-center items-center space-y-4 text-center mb-8'>
+        <h1 className='text-2xl md:text-4xl font-bold'>
           Rent A car From <span className='text-[#a85349] font-bold'>Top Brands</span>
         </h1>
-        <p className='text-sm md:text-base'>
+        <p className='text-sm md:text-base max-w-3xl'>
           Get on a road trip now with the best deals for high-end cars manufactured by top automobile companies in the world.
         </p>
       </div>
-      <div className='flex flex-wrap justify-between items-center mt-6'>
+
+      {/* Controls Section */}
+      <div className='flex flex-col md:flex-row justify-between items-center gap-4 mb-8'>
         {/* Buttons Section */}
         <div className="inline-flex overflow-hidden rounded-md border border-[#a85349]">
           <button
-            className={`px-6 py-3 text-[#a85349] font-medium border-r border-[#a85349] ${
-              activeButton === 'brand' ? 'bg-[#a85349] !text-white' : 'bg-white'
+            className={`px-4 md:px-6 py-3 text-[#a85349] font-medium border-r border-[#a85349] transition-colors ${
+              activeButton === 'brand' ? 'bg-[#a85349] !text-white' : 'bg-white hover:bg-gray-50'
             }`}
             onClick={() => setActiveButton('brand')}
           >
             By Brands
           </button>
           <button
-            className={`px-6 py-3 text-[#a85349] font-medium ${
-              activeButton === 'type' ? 'bg-[#a85349] !text-white' : 'bg-white'
+            className={`px-4 md:px-6 py-3 text-[#a85349] font-medium transition-colors ${
+              activeButton === 'type' ? 'bg-[#a85349] !text-white' : 'bg-white hover:bg-gray-50'
             }`}
             onClick={() => setActiveButton('type')}
           >
             By Type
           </button>
         </div>
+
         {/* Navigation and "All Brands" Button */}
         <div className='flex items-center space-x-2'>
-          <motion.div 
-            className='border border-[#a85349] rounded-md p-3 cursor-pointer hover:bg-gray-100'
+          <button 
+            className='border border-[#a85349] rounded-md p-2 md:p-3 cursor-pointer hover:bg-gray-100 transition-all hover:scale-105'
             onClick={handlePrevPage}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
           >
-            <ChevronLeft size={24} color='#a85349' />
-          </motion.div>
-          <motion.div 
-            className='border border-[#a85349] rounded-md p-3 cursor-pointer hover:bg-gray-100'
+            <ChevronLeft size={isMobile ? 20 : 24} color='#a85349' />
+          </button>
+          <button 
+            className='border border-[#a85349] rounded-md p-2 md:p-3 cursor-pointer hover:bg-gray-100 transition-all hover:scale-105'
             onClick={handleNextPage}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
           >
-            <ChevronRight size={24} color='#a85349' />
-          </motion.div>
-          <motion.button 
-            className='flex items-center px-12 py-3 bg-[#a85349] text-white rounded-md hover:opacity-90 transition-opacity'
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            <ChevronRight size={isMobile ? 20 : 24} color='#a85349' />
+          </button>
+          <button 
+            className='flex items-center px-6 md:px-12 py-2 md:py-3 bg-[#a85349] text-white rounded-md hover:opacity-90 transition-all hover:scale-105 text-sm md:text-base'
           >
             All Brands →
-          </motion.button>
+          </button>
         </div>
-        {/* Brand Logos Section */}
-        <AnimatePresence mode="wait">
-          <motion.div 
-            key={currentPage}
-            initial={{ opacity: 0, x: 300 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -300 }}
-            transition={{ type: "spring", stiffness: 260, damping: 20 }}
-            className='flex justify-center items-center gap-6 flex-wrap mt-10 w-full'
-          >
-            {currentLogos.map((brand, index) => (
-              <motion.div 
-                key={brand.name}
-                className='flex flex-col items-center justify-center w-40 h-40 p-4 border rounded-lg 
-                  hover:shadow-xl transition-all duration-300 cursor-pointer border-none 
-                  hover:bg-slate-700 group'
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <div className='mb-10 text-slate-600 group-hover:text-white transition-colors'>
-                  {React.cloneElement(brand.logo, { 
-                    color: 'currentColor', 
-                    className: 'text-slate-600 group-hover:text-white transition-colors' 
-                  })}
+      </div>
+
+      {/* Page Indicators */}
+      <div className='flex justify-center space-x-2 mb-6'>
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index}
+            className={`w-2 h-2 md:w-3 md:h-3 rounded-full transition-all ${
+              currentPage === index ? 'bg-[#a85349]' : 'bg-gray-300'
+            }`}
+            onClick={() => setCurrentPage(index)}
+          />
+        ))}
+      </div>
+
+      {/* Brand Logos Section */}
+      <div className='relative overflow-hidden'>
+        <div 
+          className='flex transition-transform duration-500 ease-in-out'
+          style={{ transform: `translateX(-${currentPage * 100}%)` }}
+        >
+          {Array.from({ length: totalPages }, (_, pageIndex) => (
+            <div 
+              key={pageIndex}
+              className={`flex-shrink-0 w-full ${
+                isMobile 
+                  ? 'grid grid-cols-2 gap-4' 
+                  : 'flex justify-center items-center gap-4 md:gap-6 flex-wrap'
+              }`}
+            >
+              {brands.slice(pageIndex * logosPerPage, (pageIndex + 1) * logosPerPage).map((brand, index) => (
+                <div 
+                  key={brand.name}
+                  className={`flex flex-col items-center justify-center p-4 border rounded-lg 
+                    hover:shadow-xl transition-all duration-300 cursor-pointer border-gray-200
+                    hover:bg-slate-700 group ${
+                      isMobile ? 'h-32' : 'w-32 md:w-40 h-32 md:h-40'
+                    }`}
+                >
+                  <div className='mb-2 md:mb-4 text-slate-600 group-hover:text-white transition-colors'>
+                    {React.cloneElement(brand.logo, { 
+                      color: 'currentColor', 
+                      className: 'text-slate-600 group-hover:text-white transition-colors' 
+                    })}
+                  </div>
+                  <span className='text-xs md:text-sm font-medium text-slate-600 group-hover:text-white transition-colors text-center'>
+                    {brand.name}
+                  </span>
                 </div>
-                <span className='text-sm font-medium text-slate-600 group-hover:text-white transition-colors'>
-                  {brand.name}
-                </span>
-              </motion.div>
-            ))}
-          </motion.div>
-        </AnimatePresence>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
