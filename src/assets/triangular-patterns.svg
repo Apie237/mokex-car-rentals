@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <!-- Background -->
+  <rect width="1200" height="800" fill="white"/>
+  
+  <!-- Define patterns -->
+  <defs>
+    <!-- Left triangle pattern - squares -->
+    <pattern id="squarePattern1" patternUnits="userSpaceOnUse" width="40" height="40">
+      <rect width="40" height="40" fill="#d2b48c"/>
+      <rect x="5" y="5" width="30" height="30" stroke="#c2a070" stroke-width="1" fill="none"/>
+      <rect x="10" y="10" width="20" height="20" stroke="#c2a070" stroke-width="0.5" fill="none"/>
+    </pattern>
+    
+    <!-- Right triangle pattern - squares -->
+    <pattern id="squarePattern2" patternUnits="userSpaceOnUse" width="50" height="50">
+      <rect width="50" height="50" fill="#d2b48c"/>
+      <rect x="5" y="5" width="40" height="40" stroke="#c2a070" stroke-width="1" fill="none"/>
+      <rect x="15" y="15" width="20" height="20" stroke="#c2a070" stroke-width="0.5" fill="none"/>
+      <path d="M0,0 L50,50 M50,0 L0,50" stroke="#c2a070" stroke-width="0.5" opacity="0.6"/>
+    </pattern>
+    
+    <!-- Subtle background pattern -->
+    <pattern id="backgroundPattern" patternUnits="userSpaceOnUse" width="60" height="60" patternTransform="rotate(45)">
+      <rect width="30" height="30" fill="#f9f7f7" x="0" y="0" />
+      <rect width="30" height="30" fill="#f7f5f5" x="30" y="30" />
+    </pattern>
+  </defs>
+  
+  <!-- Left Triangle with square pattern -->
+  <polygon points="0,0 300,0 0,300" fill="url(#squarePattern1)"/>
+  
+  <!-- Right Triangle with square pattern (variation) -->
+  <polygon points="900,0 1200,0 1200,300" fill="url(#squarePattern2)"/>
+  
+  <!-- Subtle background pattern across entire image -->
+  <rect width="1200" height="800" fill="url(#backgroundPattern)" opacity="0.4"/>
+</svg>

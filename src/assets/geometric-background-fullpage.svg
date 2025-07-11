@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <!-- Background -->
+  <rect width="1200" height="800" fill="white"/>
+  
+  <!-- Left Triangle with geometric pattern -->
+  <g>
+    <!-- Triangle shape -->
+    <polygon points="0,0 300,0 0,300" fill="#f7f3f3"/>
+    
+    <!-- Subtle geometric pattern inside left triangle -->
+    <g fill="#efe9e9" opacity="0.6">
+      <path d="M0,30 L30,0 L0,0 Z" />
+      <path d="M0,60 L60,0 L30,0 L0,30 Z" />
+      <path d="M0,90 L90,0 L60,0 L0,60 Z" />
+      <path d="M0,120 L120,0 L90,0 L0,90 Z" />
+      <path d="M0,150 L150,0 L120,0 L0,120 Z" />
+      <path d="M0,180 L180,0 L150,0 L0,150 Z" />
+      <path d="M0,210 L210,0 L180,0 L0,180 Z" />
+      <path d="M0,240 L240,0 L210,0 L0,210 Z" />
+      <path d="M0,270 L270,0 L240,0 L0,240 Z" />
+      <path d="M0,300 L300,0 L270,0 L0,270 Z" />
+    </g>
+  </g>
+  
+  <!-- Right Triangle with geometric pattern -->
+  <g>
+    <!-- Triangle shape -->
+    <polygon points="900,0 1200,0 1200,300" fill="#f7f3f3"/>
+    
+    <!-- Subtle geometric pattern inside right triangle -->
+    <g fill="#efe9e9" opacity="0.6">
+      <path d="M1200,30 L1170,0 L1200,0 Z" />
+      <path d="M1200,60 L1140,0 L1170,0 L1200,30 Z" />
+      <path d="M1200,90 L1110,0 L1140,0 L1200,60 Z" />
+      <path d="M1200,120 L1080,0 L1110,0 L1200,90 Z" />
+      <path d="M1200,150 L1050,0 L1080,0 L1200,120 Z" />
+      <path d="M1200,180 L1020,0 L1050,0 L1200,150 Z" />
+      <path d="M1200,210 L990,0 L1020,0 L1200,180 Z" />
+      <path d="M1200,240 L960,0 L990,0 L1200,210 Z" />
+      <path d="M1200,270 L930,0 L960,0 L1200,240 Z" />
+      <path d="M1200,300 L900,0 L930,0 L1200,270 Z" />
+    </g>
+  </g>
+  
+  <!-- Subtle background pattern across entire image -->
+  <pattern id="backgroundPattern" patternUnits="userSpaceOnUse" width="60" height="60" patternTransform="rotate(45)">
+    <rect width="30" height="30" fill="#f9f7f7" x="0" y="0" />
+    <rect width="30" height="30" fill="#f7f5f5" x="30" y="30" />
+  </pattern>
+  <rect width="1200" height="800" fill="url(#backgroundPattern)" opacity="0.4"/>
+</svg>
